@@ -12,6 +12,7 @@ const DB_FILE = './database.json';
 app.use(cors());
 app.use(express.json());
 
+// --- UTILITY UNTUK DATABASE PERMANEN ---
 const readData = () => {
     if (!fs.existsSync(DB_FILE)) {
         const initialData = [
@@ -29,6 +30,7 @@ const writeData = (data) => {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 };
 
+// --- AUTH MIDDLEWARE ---
 const authenticate = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ error: "Unauthorized" });
@@ -40,6 +42,7 @@ const authenticate = (req, res, next) => {
     });
 };
 
+// --- ROUTES ---
 app.get('/', (req, res) => {
     res.send('<h1>🚀 Zegen Backend Active</h1><p>Docs: <a href="/api-docs">/api-docs</a></p>');
 });
@@ -80,6 +83,7 @@ app.delete('/todos/:id', authenticate, (req, res) => {
     res.json({ message: "Deleted successfully" });
 });
 
+// --- SWAGGER CONFIG ---
 const swaggerDocument = {
     openapi: '3.0.0',
     info: { title: 'Zegen API Internship', version: '1.0.0' },

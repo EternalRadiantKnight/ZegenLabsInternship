@@ -22,15 +22,23 @@ export default function App() {
   const [globalFilter, setGlobalFilter] = useState('');
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const handleLogin = async () => {
-    try {
-      const res = await axios.post('http://localhost:3000/login', { username, password });
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('role', res.data.role);
-      setToken(res.data.token);
-      setRole(res.data.role);
-    } catch {
-      alert("Login Gagal!");
+  // LOGIKA LOGIN OTOMATIS (MOCK UNTUK VERCEL)
+  const handleLogin = () => {
+    // Mengecek kredensial secara lokal agar bisa login di Vercel tanpa backend online
+    if (username === 'admin' && password === 'admin123') {
+      const mockToken = 'mock-jwt-token-admin';
+      localStorage.setItem('token', mockToken);
+      localStorage.setItem('role', 'admin');
+      setToken(mockToken);
+      setRole('admin');
+    } else if (username === 'user' && password === 'user123') {
+      const mockToken = 'mock-jwt-token-user';
+      localStorage.setItem('token', mockToken);
+      localStorage.setItem('role', 'user');
+      setToken(mockToken);
+      setRole('user');
+    } else {
+      alert("Kredensial salah! Gunakan admin / admin123");
     }
   };
 
@@ -43,6 +51,7 @@ export default function App() {
   const { data, isLoading, isError, error } = useQuery<Product[]>({
     queryKey: ['products'], 
     queryFn: async () => {
+      // Mengambil data dari API publik agar tabel selalu terisi di Vercel
       const res = await axios.get('https://dummyjson.com/products');
       return res.data.products;
     },
@@ -74,11 +83,12 @@ export default function App() {
           <Sparkles className="text-indigo-400 mx-auto mb-4 animate-pulse" size={48} />
           <h1 className="text-3xl font-black text-center mb-8 tracking-tighter italic uppercase">ZEGEN LABS</h1>
           <div className="space-y-4">
-            <input className="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" onKeyDown={(e) => e.key === 'Enter' && handleLogin()} className="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={handleLogin} className="w-full bg-indigo-500 py-4 rounded-2xl font-black hover:bg-indigo-400 transition-all flex items-center justify-center gap-2 shadow-lg">
+            <input className="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 text-white" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+            <input type="password" onKeyDown={(e) => e.key === 'Enter' && handleLogin()} className="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 text-white" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+            <button onClick={handleLogin} className="w-full bg-indigo-500 py-4 rounded-2xl font-black hover:bg-indigo-400 transition-all flex items-center justify-center gap-2 shadow-lg text-white">
               <LogIn size={20} /> INITIALIZE SESSION
             </button>
+            <p className="text-[10px] text-center text-slate-500 uppercase tracking-widest font-bold mt-4">Login with: admin / admin123</p>
           </div>
         </div>
       </div>

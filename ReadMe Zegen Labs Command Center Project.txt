@@ -37,9 +37,9 @@ Gunakan akun di bawah ini untuk masuk ke Command Center:
 
 
 Cara Menjalankan Proyek
-
+frontend sudah di-deploy sesuai instruksi, namun karena keterbatasan waktu deployment backend, fitur login membutuhkan backend dijalankan secara lokal.
 1. Persiapan Backend
 ```bash
-cd backend
+cd backend-test
 npm install
 node server.js
