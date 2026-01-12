@@ -88,7 +88,6 @@ export default function App() {
             <button onClick={handleLogin} className="w-full bg-indigo-500 py-4 rounded-2xl font-black hover:bg-indigo-400 transition-all flex items-center justify-center gap-2 shadow-lg text-white">
               <LogIn size={20} /> INITIALIZE SESSION
             </button>
-            <p className="text-[10px] text-center text-slate-500 uppercase tracking-widest font-bold mt-4">Login with: admin / admin123</p>
           </div>
         </div>
       </div>
