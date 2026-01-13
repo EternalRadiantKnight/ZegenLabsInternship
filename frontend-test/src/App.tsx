@@ -22,9 +22,7 @@ export default function App() {
   const [globalFilter, setGlobalFilter] = useState('');
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  // LOGIKA LOGIN OTOMATIS (MOCK UNTUK VERCEL)
   const handleLogin = () => {
-    // Mengecek kredensial secara lokal agar bisa login di Vercel tanpa backend online
     if (username === 'admin' && password === 'admin123') {
       const mockToken = 'mock-jwt-token-admin';
       localStorage.setItem('token', mockToken);
@@ -38,7 +36,7 @@ export default function App() {
       setToken(mockToken);
       setRole('user');
     } else {
-      alert("Kredensial salah! Gunakan admin / admin123");
+      alert("Kredensial salah!");
     }
   };
 
@@ -51,7 +49,6 @@ export default function App() {
   const { data, isLoading, isError, error } = useQuery<Product[]>({
     queryKey: ['products'], 
     queryFn: async () => {
-      // Mengambil data dari API publik agar tabel selalu terisi di Vercel
       const res = await axios.get('https://dummyjson.com/products');
       return res.data.products;
     },
